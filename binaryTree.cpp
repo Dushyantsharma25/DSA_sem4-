@@ -19,6 +19,41 @@ class node{
 };
 
 
+void insert_binary_tree(node* &root){
+    cout<<"Enter the Data for the element to insert in tree.\n";int d;cin>>d;
+    node* p = new node(d);
+    if(root == NULL){
+        root = p;
+        cout<<"Element successfully inserted\n";
+        return;
+    }
+    node* move = root;
+    while(1){
+        string f;cout<<"\nEnter direction to go , l for left and r for right.\n";cin>>f;
+
+        if(f == "l"){
+            if(move->left){
+                move = move->left;
+            }else{
+                move->left = p;
+                cout<<"Element successfully inserted\n";
+                return;
+            }
+        }else if(f == "r"){
+            if(move->right){
+                move = move->right;
+            }else{
+                move->right = p;
+                cout<<"Element successfully inserted\n";
+                return;
+            }
+        }else{
+            cout<<"Enter Valid character\n";
+        }
+        
+    }
+}
+
 void level_order(node* root){
     if(root == NULL){
         return;
@@ -141,7 +176,7 @@ void search_element_in_BST(node* root,int x){
     }
 }
 
-void insert_binary_tree(node* &root){
+void insert_BST_tree(node* &root){
     int d;cout<<"Enter the element to insert\n";cin>>d;
     node* p = new node(d);
     if(root == NULL){
@@ -181,17 +216,18 @@ int main(){
     while(1){
         cout<<"\n";
         cout<<"1. To insert element in binary search tree.\n";
-        cout<<"2. To print preorder of tree.\n";
-        cout<<"3. To print inorder of tree.\n";
-        cout<<"4. To print postorder of tree.\n";
-        cout<<"5. To print iterative preorder of tree.\n";
-        cout<<"6. To print iterative inorder of tree.\n";
-        cout<<"7. To print iterative postorder of tree.\n";
-        cout<<"8. To print in level order of tree.\n";
-        cout<<"9. To cheack if both binary tree equal.\n";
-        cout<<"10. To search a element in binary tree \n";
-        cout<<"11. To make a clone of binary.\n";
-        cout<<"12. To EXIT\n";
+        cout<<"2. To insert element in binary tree.\n";
+        cout<<"3. To print preorder of tree.\n";
+        cout<<"4. To print inorder of tree.\n";
+        cout<<"5. To print postorder of tree.\n";
+        cout<<"6. To print iterative preorder of tree.\n";
+        cout<<"7. To print iterative inorder of tree.\n";
+        cout<<"8. To print iterative postorder of tree.\n";
+        cout<<"9. To print in level order of tree.\n";
+        cout<<"10. To cheack if both binary tree equal.\n";
+        cout<<"11. To search a element in binary tree \n";
+        cout<<"12. To make a clone of binary.\n";
+        cout<<"13. To EXIT\n";
         cout<<"\n";
         cin>>c;
 
@@ -201,39 +237,42 @@ int main(){
             int y;cout<<"In which tree you want to insert data\n";cin>>y;
             y--;
             cout<<"\n";
-            insert_binary_tree(root[y]);
+            insert_BST_tree(root[y]);
             cout<<"\n";
         }else if(c == 2){
             cout<<"\n";
-            cout<<"\nEnter the tree number you want to display\n";int y;cin>>y;
+            int y;cout<<"In which tree you want to insert data\n";cin>>y;
             y--;
             cout<<"\n";
-            print_preorder(root[y]);
+            insert_binary_tree(root[y]);
             cout<<"\n";
         }else if(c == 3){
             cout<<"\n";
             cout<<"\nEnter the tree number you want to display\n";int y;cin>>y;
             y--;
             cout<<"\n";
-            print_inorder(root[y]);
+            print_preorder(root[y]);
             cout<<"\n";
         }else if(c == 4){
             cout<<"\n";
             cout<<"\nEnter the tree number you want to display\n";int y;cin>>y;
             y--;
             cout<<"\n";
-            print_postorder(root[y]);
+            print_inorder(root[y]);
             cout<<"\n";
         }else if(c == 5){
+            cout<<"\n";
+            cout<<"\nEnter the tree number you want to display\n";int y;cin>>y;
+            y--;
+            cout<<"\n";
+            print_postorder(root[y]);
+            cout<<"\n";
+        }else if(c == 6){
             cout<<"\nEnter the tree number you want to display\n";int y;cin>>y;
             y--;
             cout<<"\n";
             vector<int> p = iterative_preorder(root[y]);
             for(auto i : p){cout<<i<<"\n";}
-            cout<<"\n";
-        }else if(c == 6){
-            cout<<"\n";
-            // in progress
             cout<<"\n";
         }else if(c == 7){
             cout<<"\n";
@@ -241,12 +280,16 @@ int main(){
             cout<<"\n";
         }else if(c == 8){
             cout<<"\n";
+            // in progress
+            cout<<"\n";
+        }else if(c == 9){
+            cout<<"\n";
             cout<<"\nEnter the tree number you want to display\n";int y;cin>>y;
             y--;
             cout<<"\n";
             level_order(root[y]);
             cout<<"\n";
-        }else if(c == 9){
+        }else if(c == 10){
             cout<<"\n";
             cout<<"Enter number of binary trees check for equality\n";
             int x,y;cin>>x>>y;x--;y--;
@@ -257,7 +300,7 @@ int main(){
                 cout<<"Binary trees are not equal\n";
             }
             cout<<"\n";
-        }else if(c == 10){
+        }else if(c == 11){
             cout<<"\n";
             int y,x;cout<<"Enter the number of tree in which you want to search the value\n";
             cin>>y;y--;cout<<"\n";
@@ -265,9 +308,9 @@ int main(){
             cin>>x;cout<<"\n";
             search_element_in_BST(root[y],x);
             cout<<"\n";
-        }else if(c == 11){
-            
         }else if(c == 12){
+            
+        }else if(c == 13){
             cout<<"\n";
             cout<<"\nProgram successfully terminated\n";
             cout<<"\n";
