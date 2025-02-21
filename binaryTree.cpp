@@ -144,8 +144,55 @@ vector<int> iterative_preorder(node* root){
 
 vector<int> iterative_inorder(node* root){
     vector<int> inorder;
+    stack<node*> p;
+
+    node* temp = root;
+
+    while(1){
+        if(temp != NULL){
+            p.push(temp);
+            temp = temp -> left;
+        }else{
+            if(p.empty()){
+                break;
+            }
+            temp = p.top();
+            p.pop();
+            inorder.push_back(temp->data);
+            temp = temp -> right;
+        }
+    }
+
+    return inorder;
+}
 
 
+vector<int> iterative_postorder(node* root){
+    vector<int> postorder;
+    stack<node*> p,q;
+
+    node* temp = root;
+    p.push(root);
+    while(!p.empty()){
+        temp = p.top();
+        q.push(temp);
+        p.pop();
+
+        if(temp->left){
+            p.push(temp->left);
+        }
+
+        if(temp->right){
+            p.push(temp->right);
+        }
+    }
+
+    while(!q.empty()){
+        postorder.push_back(q.top() -> data);
+        q.pop();
+    }
+
+    return postorder;
 }
 
 void search_element_in_BST(node* root,int x){
@@ -207,6 +254,37 @@ void insert_BST_tree(node* &root){
 }
 
 
+void mirror(node* root,node* temp){
+    if(root == NULL){
+        return;
+    }
+
+    temp = new node(root->data);
+
+    mirror(root->left,temp->right);
+    mirror(root->right,temp->left);
+}
+
+int height(node* root){
+
+    if(root == NULL){return 1;}
+
+    int Left = height(root->left);
+
+    int Right = height(root->right);
+
+    return 1+max(Left,Right);
+}
+
+
+void clone(node* root,node* temp){
+    if(root == nullptr) return;
+    temp = new node(root->data);
+    clone(root->left,temp->left);
+    clone(root->right,temp->right);   
+}
+
+
 int main(){
     cout<<"\n";
     int n;cout<<"Enter number of trees you want to create\n";cin>>n;
@@ -227,7 +305,9 @@ int main(){
         cout<<"10. To cheack if both binary tree equal.\n";
         cout<<"11. To search a element in binary tree \n";
         cout<<"12. To make a clone of binary.\n";
-        cout<<"13. To EXIT\n";
+        cout<<"13. To make a mirror of binary tree\n";
+        cout<<"14. To finding height of binary tree\n";
+        cout<<"15. To EXIT\n";
         cout<<"\n";
         cin>>c;
 
@@ -275,12 +355,18 @@ int main(){
             for(auto i : p){cout<<i<<"\n";}
             cout<<"\n";
         }else if(c == 7){
+            cout<<"\nEnter the tree number you want to display\n";int y;cin>>y;
+            y--;
             cout<<"\n";
-            // in progress
+            vector<int> p = iterative_inorder(root[y]);
+            for(auto i : p){cout<<i<<"\n";}
             cout<<"\n";
         }else if(c == 8){
+            cout<<"\nEnter the tree number you want to display\n";int y;cin>>y;
+            y--;
             cout<<"\n";
-            // in progress
+            vector<int> p = iterative_postorder(root[y]);
+            for(auto i : p){cout<<i<<"\n";}
             cout<<"\n";
         }else if(c == 9){
             cout<<"\n";
@@ -309,8 +395,26 @@ int main(){
             search_element_in_BST(root[y],x);
             cout<<"\n";
         }else if(c == 12){
-            
+            node* temp = NULL;
+            root.emplace_back(temp);
+            int y;cout<<"Enter the number of tree in which you want to clone\n\n";cin>>y;y--;
+            clone(root[y],temp);     
+            cout<<"Clone successfully created on "<< root.size() <<" position\n";
         }else if(c == 13){
+            node* temp = NULL;
+            root.push_back(temp);
+            cout<<"\n";
+            cout<<"\nSelect the number of binary tree to make the mirror\n";int y;cin>>y;y--;
+            mirror(root[y],temp);
+            cout<<"mirror successfully created on "<< root.size() <<" position\n";
+            cout<<"\n";
+        }else if(c == 14){
+            cout<<"\n";
+            cout<<"\nSelect the number of binary tree to find the height of it.\n";int y;cin>>y;y--;
+            int h = height(root[y]);
+            cout<<"Height of binary tree is = "<< h << "\n";
+            cout<<"\n";
+        }else if(c == 15){
             cout<<"\n";
             cout<<"\nProgram successfully terminated\n";
             cout<<"\n";
