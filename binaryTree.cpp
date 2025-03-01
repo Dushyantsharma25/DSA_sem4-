@@ -166,6 +166,9 @@ void print_postorder(node *root)
 
 vector<int> iterative_preorder(node *root)
 {
+    if(root == NULL){
+        return;
+    }
     vector<int> preorder;
 
     stack<node *> p;
@@ -191,6 +194,9 @@ vector<int> iterative_preorder(node *root)
 
 vector<int> iterative_inorder(node *root)
 {
+    if(root == NULL){
+        return;
+    }
     vector<int> inorder;
     stack<node *> p;
 
@@ -221,6 +227,9 @@ vector<int> iterative_inorder(node *root)
 
 vector<int> iterative_postorder(node *root)
 {
+    if(root == NULL){
+        return;
+    }
     vector<int> postorder;
     stack<node *> p, q;
 
