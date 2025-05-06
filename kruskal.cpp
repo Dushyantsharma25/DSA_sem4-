@@ -1,85 +1,70 @@
-#include <algorithm>
 #include <iostream>
-#include <vector>
 using namespace std;
 
-#define edge pair<int, int>
-
-class Graph {
-   private:
-  vector<pair<int, edge> > G;  // graph
-  vector<pair<int, edge> > T;  // mst
-  int *parent;
-  int V;  // number of vertices/nodes in graph
-   public:
-  Graph(int V);
-  void add_edge(int u, int v, int w);
-  int find(int i);
-  void uni(int u, int v);
-  void kruskal();
-  void print();
-};
-
-void Graph::add_edge(int u, int v, int w) {
-  G.push_back(make_pair(w, edge(u, v)));
+// DSU (Disjoint Set Union) for cycle detection
+int findParent(int u, vector<int>& parent) {
+    if (parent[u] == u) return u;
+    return parent[u] = findParent(parent[u], parent); // path compression
 }
 
-Graph::Graph(int V) {
-  parent = new int[V];
-
-for (int i = 0; i < V; i++)
-    parent[i] = i;
-}
-int Graph::find(int i) {
-  // If i is the parent of itself
-  if (i == parent[i])
-      return i;
-  else
-     return find(parent[i]);
-}
-void Graph::uni(int u, int v) {
-  parent[u] = v;
-}
-
-void Graph::kruskal() {
-  int i, u, v;
-  sort(G.begin(), G.end());  // increasing weight
-  for (i = 0; i < G.size(); i++) {
-    u = find(G[i].second.first);
-    v= find(G[i].second.second);
+void unionSet(int u, int v, vector<int>& parent, vector<int>& rank) {
+    u = findParent(u, parent);
+    v = findParent(v, parent);
     if (u != v) {
-      T.push_back(G[i]);  // add to tree
-      uni(u, v);
+        if (rank[u] < rank[v]) {
+            parent[u] = v;
+        } else if (rank[u] > rank[v]) {
+            parent[v] = u;
+        } else {
+            parent[v] = u;
+            rank[u]++;
+        }
     }
-  }
 }
-void Graph::print() {
-  cout << "Edge :"
-     << " Weight" << endl;
-  for (int i = 0; i < T.size(); i++) {
-    cout << T[i].second.first << " - " << T[i].second.second << " : "
-       << T[i].first;
-    cout << endl;
-  }
+
+int kruskal(int V, vector<vector<int>>& edges) {
+    // Sort edges by weight (ascending)
+    sort(edges.begin(), edges.end());
+
+    vector<int> parent(V);
+    vector<int> rank(V, 0);
+
+    for (int i = 0; i < V; i++) parent[i] = i;
+
+    int mstWeight = 0;
+
+    for (auto edge : edges) {
+        int weight = edge[0];
+        int u = edge[1];
+        int v = edge[2];
+
+        if (findParent(u, parent) != findParent(v, parent)) {
+            mstWeight += weight;
+            unionSet(u, v, parent, rank);
+            cout << "Edge selected: " << u << " - " << v << " (Weight: " << weight << ")\n";
+        }
+    }
+
+    return mstWeight;
 }
-int main()
-{   
-    
-        Graph g(7);
-        
-    
-g.add_edge(0, 1, 4) ; 
-g.add_edge(0, 6, 10); 
-g.add_edge(0, 2, 9) ; 
-g.add_edge(1, 2, 8) ; 
-g.add_edge(2, 3, 5) ; 
-g.add_edge(2, 4, 2)  ;
-g.add_edge(2, 6, 7)  ;
-g.add_edge(3, 4, 3) ; 
-g.add_edge(3, 5, 7) ; 
-g.add_edge(4, 6, 6) ; 
-g.add_edge(5, 6, 11) ;
- g.kruskal() ;
- g.print();
+
+int main() {
+    int V, E;
+    cout << "Enter number of vertices and edges: ";
+    cin >> V >> E;
+
+    vector<vector<int>> edges;
+
+    cout << "Enter edges in the format: u v weight" << endl;
+    for (int i = 0; i < E; i++) {
+        int u, v, w;
+        cin >> u >> v >> w;
+        edges.push_back({w, u, v}); // store as {weight, u, v}
+    }
+
+    int mstCost = kruskal(V, edges);
+
+    cout << "\nTotal cost of MST: " << mstCost << endl;
+
     return 0;
 }
